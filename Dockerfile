@@ -1,4 +1,4 @@
-# Use an official Python runtime as a parent image
+# Use an official Ubuntu runtime as a parent image
 FROM ubuntu:3.11.4
 
 # Set the working directory in the container

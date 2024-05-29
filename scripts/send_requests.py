@@ -1,7 +1,6 @@
 import aiohttp
 import asyncio
 
-
 async def send_request(session, url):
     print("Sending request to", url)
     async with session.get(url) as response:

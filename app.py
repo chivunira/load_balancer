@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route('/home')
 def home():
@@ -12,5 +12,5 @@ def home():
 def heartbeat():
     return '', 200
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(host='0.0.0.0', port=5000)

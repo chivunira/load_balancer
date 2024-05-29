@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  server1:
+    build: .
+    image: chivunira/load_balancer_repo:v3
+    container_name: server1
+    ports:
+      - "5001:5000"
+    environment:
+      - SERVER_ID=1
+
+  server2:
+    build: .
+    image: chivunira/load_balancer_repo:v3
+    container_name: server2
+    ports:
+      - "5002:5000"
+    environment:
+      - SERVER_ID=2
+
+  server3:
+    build: .
+    image: chivunira/load_balancer_repo:v3
+    container_name: server3
+    ports:
+      - "5003:5000"
+    environment:
+      - SERVER_ID=3
+
+  load_balancer:
+    build:
+      context: .
+      dockerfile: Dockerfile_load_balancer
+    image: chivunira/load_balancer_repo:v3
+    container_name: load_balancer
+    ports:
+      - "5000:5000"

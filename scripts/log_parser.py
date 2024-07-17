@@ -1,7 +1,12 @@
 import re
+import os
 import matplotlib.pyplot as plt
 
 def parse_logs(log_file):
+    if not os.path.exists(log_file):
+        print(f"Log file '{log_file}' does not exist.")
+        return {}
+
     with open(log_file, 'r') as file:
         logs = file.readlines()
 
@@ -36,10 +41,16 @@ def generate_bar_chart(counts):
     plt.savefig('bar_chart.png', format='png', dpi=300)
     plt.show()
 
-counts = parse_logs('C:/Users/Anne/Downloads/pythonProject1/pythonProject1/server_selection.log')
-generate_bar_chart(counts)
+log_file_path = '../server_selection.log'
+counts = parse_logs(log_file_path)
+if counts:
+    generate_bar_chart(counts)
 
 def count_server_logs(log_file):
+    if not os.path.exists(log_file):
+        print(f"Log file '{log_file}' does not exist.")
+        return 0
+
     with open(log_file, 'r') as file:
         logs = file.readlines()
 
@@ -48,5 +59,5 @@ def count_server_logs(log_file):
 
     return count
 
-count = count_server_logs('C:/Users/Anne/Downloads/pythonProject1/pythonProject1/server_selection.log')
+count = count_server_logs(log_file_path)
 print(f"There are {count} logs redirected to servers.")

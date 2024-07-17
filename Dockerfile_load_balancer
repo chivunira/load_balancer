@@ -1,17 +1,22 @@
 # Use an official Ubuntu runtime as a parent image
-FROM ubuntu:3.11.4
+FROM ubuntu:20.04
 
 # Set the working directory in the container
-WORKDIR /load_balancer
+WORKDIR /app
+
+# Install any necessary dependencies here
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip
 
 # Copy the current directory contents into the container at /app
-COPY . /load_balancer
+COPY . /app
 
-# Install any needed dependencies specified in requirements.txt
-RUN pip install -r requirements.txt
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Define environment variable
+ENV NAME World
 
-# Run loadbalancer.py when the container launches
-CMD ["python", "load_balancer.py"]
+# Run app.py when the container launches
+CMD ["python3", "app.py"]

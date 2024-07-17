@@ -50,6 +50,24 @@ This project features a load balancer developed in Docker, utilizing an Ubuntu b
     - **`POST /add`**: Incorporates new server replicas.
     - **`DELETE /rm`**: Removes existing server replicas.
 
+
+3. **Run The Load Balancer locally**:
+    Execute the load balancer script to start the load balancer locally:
+    ```bash
+    python load_balancer.py
+    ```
+
+4. **Run The Scripts file**:
+    Execute the test script to dispatch 10,000 requests and monitor the request handling logs:
+    ```bash
+    python scripts/send_requests.py
+    ```
+5. **Run the chart plotter**:
+    Execute the chart plotter script to plot the request handling logs:
+    ```bash
+    python scripts/log_parser.py
+   ```
+
 ## Assumptions
 - **Homogeneous Servers**: Assumes that all server instances possess equivalent capabilities and performance.
 - **Stateless Servers**: Servers do not retain session data, allowing for flexible request routing.
@@ -59,3 +77,9 @@ This project features a load balancer developed in Docker, utilizing an Ubuntu b
 ## Performance Analysis
 
 The load balancer has undergone extensive testing across various scenarios, including the dynamic addition and removal of servers, and evaluation of request distribution efficacy. Testing results confirm that the load balancer proficiently equalizes the load across server replicas and adapts swiftly to configuration changes.
+
+### Visualization of request distribution across the servers
+![Bar Chart](scripts/bar_chart.png)
+
+### Visualization of live server status and load balancer receiving requests
+![Live Services](images/running_servers.png)

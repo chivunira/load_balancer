@@ -50,9 +50,13 @@ This project features a load balancer developed in Docker, utilizing an Ubuntu b
     This command constructs the Docker images for the load balancer and server replicas, then initiates the containers.
 
 
-3. **Run your Docker container with the volume mapping:**:
-    ```bash
+3. **Run your Docker container with the volume mapping:**
+   ```bash
+   # Windows powershell command
     docker run -d -p 5000:5000 -v $(pwd)/logs:/app/logs --name load_balancer_container load_balancer
+   
+   # Git Bash command or similar shell
+   docker run -d -p 5000:5000 -v C:/path/to/project/logs:/app/logs --name load_balancer_container load_balancer
     ```
     This command launches the Docker container for the load balancer, mapping the local directory to the container's `/app` directory.
     
@@ -87,7 +91,7 @@ This project features a load balancer developed in Docker, utilizing an Ubuntu b
 
 The load balancer has undergone extensive testing across various scenarios, including the dynamic addition and removal of servers, and evaluation of request distribution efficacy. Testing results confirm that the load balancer proficiently equalizes the load across server replicas and adapts swiftly to configuration changes.
 
-### Visualization of request distribution across the servers
+### Visualization of distribution of 10000 requests across the servers
 ![Bar Chart](bar_chart.png)
 
 ### Visualization of live server status and load balancer receiving requests

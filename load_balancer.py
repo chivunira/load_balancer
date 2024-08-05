@@ -2,20 +2,23 @@ import requests
 from flask import Flask, request, jsonify
 import random
 import logging
+import os
 
 app = Flask(__name__)
 
 # List to store server replicas
 server_replicas = ["http://localhost:5001", "http://localhost:5002", "http://localhost:5003"]
 
-# Logging configuration
-logging.basicConfig(filename='server_selection.log', level=logging.INFO)
+# Ensure the logs directory exists
+log_dir = '/app/logs'
+os.makedirs(log_dir, exist_ok=True)
 
+# Logging configuration
+logging.basicConfig(filename=os.path.join(log_dir, 'server_selection.log'), level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Function to get status of server replicas
 def get_server_replicas():
     return {'N': len(server_replicas), 'replicas': server_replicas}
-
 
 # Function to route requests to server replicas
 def route_request():
@@ -26,13 +29,11 @@ def route_request():
     # Simple round-robin load balancing
     return random.choice(server_replicas)
 
-
 # Endpoint for /rep
 @app.route('/rep', methods=['GET'])
 def get_replicas():
     replicas_status = get_server_replicas()
     return jsonify(replicas_status)
-
 
 # Endpoint for /add
 @app.route('/add', methods=['POST'])
@@ -85,17 +86,15 @@ def remove_servers():
 
     return jsonify({'message': {'N': len(server_replicas), 'replicas': server_replicas}, 'status': 'successful'}), 200
 
-
 # Endpoint for /
 @app.route('/', methods=['GET'])
 def route_request_to_server():
     server = route_request()
     if server:
-        logging.info(f"Request redirected to server: {server}")  # Add this line
+        logging.info(f"Request redirected to server: {server}")
         return f"Request routed to server: {server}", 200
     else:
         return "Error: No server replicas available", 400
-
 
 @app.route('/home', methods=['GET'])
 def route_home_request_to_server():
@@ -105,15 +104,15 @@ def route_home_request_to_server():
         try:
             response = requests.get(f"{server}/home")
             if response.status_code == 200:
-                logging.info(f"Request redirected to server: {server}")  # This line already exists
+                logging.info(f"Request redirected to server: {server}")
                 return f"Request routed to server: {server}\n{response.text}", 200
             else:
                 return f"Error: {response.status_code}", response.status_code
         except Exception as e:
+            logging.error(f"Request to {server} failed with error: {str(e)}")
             return f"Error: {str(e)}", 500
     else:
         return "Error: No server replicas available", 400
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
